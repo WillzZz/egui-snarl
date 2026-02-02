@@ -147,14 +147,16 @@ impl SnarlViewer<DemoNode> for DemoViewer {
         snarl.connect(from.id, to.id);
     }
 
-    fn title(&mut self, node: &DemoNode) -> String {
-        match node {
+    fn title(&mut self, ui: &mut Ui, node: &mut DemoNode) {
+        
+        let str = match node {
             DemoNode::Sink => "Sink".to_owned(),
             DemoNode::Number(_) => "Number".to_owned(),
             DemoNode::String(_) => "String".to_owned(),
             DemoNode::ShowImage(_) => "Show image".to_owned(),
             DemoNode::ExprNode(_) => "Expr".to_owned(),
-        }
+        };
+        ui.label(&str);
     }
 
     fn inputs(&mut self, node: &DemoNode) -> usize {
@@ -1063,6 +1065,9 @@ impl App for DemoApp {
 
         let style = serde_json::to_string(&self.style).unwrap();
         storage.set_string("style", style);
+    }
+
+    fn ui(&mut self, ui: &mut egui::Ui, frame: &mut eframe::Frame) {
     }
 }
 

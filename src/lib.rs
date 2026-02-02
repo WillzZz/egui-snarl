@@ -173,6 +173,14 @@ impl Wires {
         self.wires.retain(|wire| wire.in_pin != pin);
         count - self.wires.len()
     }
+    
+    fn inpin_used(&self, in_pin: InPinId) -> bool {
+        self.wires.iter().find(|wire| wire.in_pin == in_pin).is_some()
+    }
+
+    fn outpin_used(&self, out_pin: OutPinId) -> bool {
+        self.wires.iter().find(|wire| wire.out_pin == out_pin).is_some()
+    }
 
     fn drop_outputs(&mut self, pin: OutPinId) -> usize {
         let count = self.wires.len();
@@ -361,6 +369,16 @@ impl<T> Snarl<T> {
     pub fn drop_outputs(&mut self, pin: OutPinId) -> usize {
         assert!(self.nodes.contains(pin.node.0));
         self.wires.drop_outputs(pin)
+    }
+
+    ///Whether this input has any active wires
+    pub fn input_in_use(&self, in_pin: InPinId) -> bool {
+        self.wires.inpin_used(in_pin)
+    }
+
+    ///Whether this output has any active wires
+    pub fn output_in_use(&self, out_pin: OutPinId) -> bool {
+        self.wires.outpin_used(out_pin)
     }
 
     /// Returns reference to the node.

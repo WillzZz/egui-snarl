@@ -4,22 +4,22 @@ members = ["demo"]
 resolver = "3"
 
 [workspace.package]
-rust-version = "1.88"
+rust-version = "1.91"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/egui-snarl"
 repository = "https://github.com/zakarumych/egui-snarl"
 
 [workspace.dependencies]
-egui = { version = "0.33" }
-eframe = { version = "0.33" }
-egui_extras = { version = "0.33" }
+egui = { git = "https://github.com/WillzZz/egui.git" }
+eframe = { git = "https://github.com/WillzZz/egui.git" }
+egui_extras = { git = "https://github.com/WillzZz/egui.git" }
 syn = { version = "2" }
 serde = { version = "1" }
 serde_json = { version = "1" }
 
-egui-probe = { version = "0.10.0" }
-egui-scale = { version = "0.3.0" }
+egui-probe = { git = "https://github.com/WillzZz/egui-probe.git" }
+egui-scale = { git = "https://github.com/WillzZz/egui-scale.git" }
 wasm-bindgen-futures = "0.4"
 web-sys = "0.3.81"
 

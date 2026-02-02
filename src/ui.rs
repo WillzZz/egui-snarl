@@ -1492,14 +1492,34 @@ where
             pin_ui.skip_ahead_auto_ids(1);
 
             if r.clicked_by(PointerButton::Secondary) {
+                //We do this first so we only clear things below.
+                //Since we're splitting the responsibilities here
+                //(because we're in a lib)
+                //this control flow is all jacked
+                //If we did this after drop_inputs,
+                //we remove the node when dropping inputs. Bad.
+                if viewer.has_connection_click_handler(&snarl.nodes[node.0].value) {
+                    viewer.handle_connection_click(
+                        snarl,
+                        node, 
+                        PointerButton::Secondary, 
+                        Some(in_pin.id), 
+                        None
+                    );
+                }
                 if snarl_state.has_new_wires() {
                     snarl_state.remove_new_wire_in(in_pin.id);
                 } else {
                     viewer.drop_inputs(in_pin, snarl);
-                    if !snarl.nodes.contains(node.0) {
-                        // If removed
-                        return;
-                    }
+                }
+
+                //We gate for snarl contains nodeid on ~1475 above.
+                //wouldn't I have to remove it manually here?
+                //I can't even get it to trigger.
+                //This branch probably never gets hit anyway
+                if !snarl.nodes.contains(node.0) {
+                    // If removed
+                    return;
                 }
             }
             if r.drag_started_by(PointerButton::Primary) {
@@ -1651,14 +1671,27 @@ where
             pin_ui.skip_ahead_auto_ids(1);
 
             if r.clicked_by(PointerButton::Secondary) {
+                //We do this first so we only clear things below.
+                //Since we're splitting the responsibilities here
+                //(because we're in a lib)
+                //this control flow is all jacked
+                if viewer.has_connection_click_handler(&snarl.nodes[node.0].value) {
+                    viewer.handle_connection_click(
+                        snarl,
+                        node, 
+                        PointerButton::Secondary, 
+                        None,
+                        Some(out_pin.id)
+                    );
+                }
                 if snarl_state.has_new_wires() {
                     snarl_state.remove_new_wire_out(out_pin.id);
                 } else {
                     viewer.drop_outputs(out_pin, snarl);
-                    if !snarl.nodes.contains(node.0) {
-                        // If removed
-                        return;
-                    }
+                }
+                if !snarl.nodes.contains(node.0) {
+                    // If removed
+                    return;
                 }
             }
             if r.drag_started_by(PointerButton::Primary) {

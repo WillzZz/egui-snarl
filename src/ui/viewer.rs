@@ -1,4 +1,4 @@
-use egui::{emath::TSTransform, Painter, Pos2, Rect, Style, Ui};
+use egui::{Painter, PointerButton, Pos2, Rect, Style, Ui, emath::TSTransform};
 
 use crate::{InPin, InPinId, NodeId, OutPin, OutPinId, Snarl};
 
@@ -13,7 +13,7 @@ use super::{
 /// response to certain events.
 pub trait SnarlViewer<T> {
     /// Returns title of the node.
-    fn title(&mut self, node: &T) -> String;
+    fn title(&mut self, ui: &mut Ui, node: &mut T);
 
     /// Returns the node's frame.
     /// All node's elements will be rendered inside this frame.
@@ -116,7 +116,7 @@ pub trait SnarlViewer<T> {
         snarl: &mut Snarl<T>,
     ) {
         let _ = (inputs, outputs);
-        ui.label(self.title(&snarl[node]));
+        self.title(ui, &mut snarl[node]);
     }
 
     /// Returns number of input pins of the node.
@@ -170,6 +170,23 @@ pub trait SnarlViewer<T> {
     fn has_footer(&mut self, node: &T) -> bool {
         let _ = node;
         false
+    }
+
+    ///Checks if node has a click handler
+    #[inline]
+    fn has_connection_click_handler(&mut self, node: &T) -> bool {
+        let _ = node;
+        false
+    }
+
+    ///Handle a click on a node
+    #[inline]
+    fn handle_connection_click(&mut self, snarl: &mut Snarl<T>, node_id: NodeId, button: PointerButton, inpin: Option<InPinId>, outpin: Option<OutPinId>) {
+        let _ = (snarl, node_id, button, inpin, outpin);
+        //I need the nodeid but also which input or output it was.
+        //In theory the location, too.
+        //In case we want to show a context menu there
+        //Can use the current mouse cursor location
     }
 
     /// Renders the node's footer.
