@@ -1386,18 +1386,20 @@ where
         snarl_state.node_to_top(node);
     }
 
-    if let Some((node, delta)) = node_moved
-        && snarl.nodes.contains(node.0)
+    if let Some((node_id, delta)) = node_moved
+        && snarl.nodes.contains(node_id.0)
     {
         ui.ctx().request_repaint();
-        if snarl_state.selected_nodes().contains(&node) {
-            for node in snarl_state.selected_nodes() {
-                let node = &mut snarl.nodes[node.0];
+        if snarl_state.selected_nodes().contains(&node_id) {
+            for node_id in snarl_state.selected_nodes() {
+                let node = &mut snarl.nodes[node_id.0];
                 node.pos += delta;
+                viewer.on_node_moved(node);
             }
         } else {
-            let node = &mut snarl.nodes[node.0];
+            let node = &mut snarl.nodes[node_id.0];
             node.pos += delta;
+            viewer.on_node_moved(node);
         }
     }
 

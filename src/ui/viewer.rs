@@ -1,6 +1,6 @@
 use egui::{Painter, PointerButton, Pos2, Rect, Style, Ui, emath::TSTransform};
 
-use crate::{InPin, InPinId, NodeId, OutPin, OutPinId, Snarl};
+use crate::{InPin, InPinId, Node, NodeId, OutPin, OutPinId, Snarl};
 
 use super::{
     pin::{AnyPins, SnarlPin},
@@ -78,6 +78,12 @@ pub trait SnarlViewer<T> {
         snarl: &Snarl<T>,
     ) {
         let _ = (style, node, inputs, outputs, snarl);
+    }
+
+    ///When a node moves within snarl
+    #[inline]
+    fn on_node_moved(&self, node: &mut Node<T>) {
+        let _ = node;
     }
 
     /// Returns elements layout for the node.
