@@ -217,6 +217,12 @@ pub trait SnarlViewer<T> {
         let _ = (node, rect, ui, snarl);
     }
 
+    /// Called when a node is double-clicked.
+    #[inline]
+    fn on_node_double_click(&mut self, node: NodeId, snarl: &mut Snarl<T>) {
+        let _ = (node, snarl);
+    }
+
     /// Checks if node has something to show in on-hover popup.
     #[inline]
     fn has_on_hover_popup(&mut self, node: &T) -> bool {

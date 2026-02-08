@@ -1910,6 +1910,10 @@ where
         node_to_top = Some(node);
     }
 
+    if r.double_clicked() {
+        viewer.on_node_double_click(node, snarl);
+    }
+
     if viewer.has_node_menu(&snarl.nodes[node.0].value) {
         r.context_menu(|ui| {
             viewer.show_node_menu(node, &inputs, &outputs, ui, snarl);
