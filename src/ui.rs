@@ -1634,7 +1634,14 @@ where
         let (height, height_outer) = heights.get(out_pin.id.output);
 
         let margin = (height_outer - height) / 2.0;
-        let outer_rect = cursor.with_max_y(cursor.top() + height_outer);
+        //This is a bugfix
+        //Output nodes always "drift" to the right 
+        //because the cursor x position slowly grows
+        //This gives us a rect that is consistent across output nodes
+        let outer_rect = Rect::from_x_y_ranges(
+            outputs_rect.x_range(),
+            cursor.top()..=(cursor.top() + height_outer),
+        );
         let inner_rect = outer_rect.shrink2(vec2(0.0, margin));
 
         let builder = UiBuilder::new().layout(pin_layout).max_rect(inner_rect);
